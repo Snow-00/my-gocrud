@@ -1,0 +1,5 @@
+crud (CReate Update Delete) API is communication between web and database
+
+in this project we will use local database
+
+POSTMAN is to test all the end-points for each methods
