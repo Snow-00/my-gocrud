@@ -43,7 +43,7 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 
 func getMovie(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("Content-Type", "application/json")
-  params := mux.Vars(r)
+  params := mux.Vars(r)  // return the route variables for the request: {id}
   for _, item := range movies {
     if item.ID == params["id"] {
       json.NewEncoder(w).Encode(item)
@@ -52,8 +52,35 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+// adding a movie to the database
 func createMovie(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "application/json")
+  var movie Movie
+  
+  //_ = json.NewDecoder(r.Body).Decode(&movie)
+  json.NewDecoder(r.Body).Decode(&movie)
+  movie.ID = strconv.Itoa(rand.Intn(1000000000))
+  movies = append(movies, movie)
+  json.NewEncoder(w).Encode(movie)
+}
 
+func updateMovie(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "application/json")
+  params := mux.Vars(r)  // return the route variables for the request: {id}
+
+  for index, item := range movies {
+    if item.ID == params["id"] {
+      movies = append(movies[:index], movies[index+1:]...)
+      var movie Movie
+      _ = json.NewDecoder(r.Body).Decode(&movie)
+
+      movie.ID = params["id"]
+      movies = append(movies, movie)
+      json.NewEncoder(w).Encode(movie)
+      
+      return
+    }
+  }
 }
 
 func main() {
@@ -62,13 +89,13 @@ func main() {
     ID: "1",
     Isbn: "438227",
     Title: "Movie One",
-    Director: &Director{Firstname"John", Lastname:"Doe"},
+    Director: &Director{Firstname:"John", Lastname:"Doe"},
   }
   secondMovie := Movie{
     ID: "2",
     Isbn: "458557",
     Title: "Movie Two",
-    Director: &Director{Firstname"Steve", Lastname:"Job"},
+    Director: &Director{Firstname:"Steve", Lastname:"Job"},
   }
 
   movies = append(movies, firstMovie)
