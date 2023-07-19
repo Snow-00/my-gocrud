@@ -8,3 +8,5 @@ in struct Go, we can add a struct tag using `key:value`
 tag = to hold meta-information for a struct field usually when dealing w/ JSON, XML, YAML
 https://linuxhint.com/golang-struct-tags/#:~:text=To%20declare%20a%20tag%20for,each%20tag%20using%20a%20space.
 when dealing w/ JSON the tag is like `json:"key_name"`
+
+appending 2 slices = append(slice_1, slice_2...)
